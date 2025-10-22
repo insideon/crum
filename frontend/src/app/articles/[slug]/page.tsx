@@ -153,7 +153,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <section className="mt-16">
           <h2 className="text-2xl font-bold mb-8 gradient-text">관련 게시글</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {relatedArticles.map((relatedArticle) => (
+            {relatedArticles.map((relatedArticle, index) => (
               <Link key={relatedArticle.id} href={`/articles/${relatedArticle.slug}`}>
                 <Card className="group overflow-hidden hover-lift border-0 shadow-lg bg-gradient-to-br from-card to-card/50 cursor-pointer p-0">
                   <div className="relative h-40 overflow-hidden">
@@ -163,6 +163,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         alt={relatedArticle.featuredImage.alternativeText || relatedArticle.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        loading={index === 0 ? "eager" : "lazy"}
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                     ) : (

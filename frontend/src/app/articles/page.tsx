@@ -3,7 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, Eye, Clock, TrendingUp } from 'lucide-react';
+import { Calendar, Eye, Clock, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { getArticles } from '@/lib/strapi';
 
 export const metadata: Metadata = {
@@ -11,10 +12,21 @@ export const metadata: Metadata = {
   description: 'Crum Blog의 모든 게시글을 최신순으로 확인하세요.',
 };
 
-export default async function ArticlesPage() {
+interface ArticlesPageProps {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}
+
+export default async function ArticlesPage({ searchParams }: ArticlesPageProps) {
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
+  const pageSize = 12;
+
   // 최신 게시글 가져오기
-  const articlesResult = await getArticles({ pageSize: 50 });
+  const articlesResult = await getArticles({ page, pageSize });
   const articles = articlesResult.data;
+  const pagination = articlesResult.meta.pagination;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -35,6 +47,7 @@ export default async function ArticlesPage() {
                     alt={article.featuredImage.alternativeText || article.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    loading={index === 0 ? "eager" : "lazy"}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 ) : (
@@ -110,6 +123,73 @@ export default async function ArticlesPage() {
           </Link>
         ))}
       </div>
+
+      {/* 페이지네이션 */}
+      {pagination.pageCount > 1 && (
+        <div className="flex items-center justify-center space-x-2 mt-8">
+          {page > 1 && (
+            <Link href={`/articles?page=${page - 1}`}>
+              <Button variant="outline" size="sm">
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                이전
+              </Button>
+            </Link>
+          )}
+
+          <div className="flex items-center space-x-1">
+            {(() => {
+              const pages = [];
+              const maxVisible = 5;
+
+              if (pagination.pageCount <= maxVisible) {
+                // 총 페이지가 5개 이하면 모든 페이지 표시
+                for (let i = 1; i <= pagination.pageCount; i++) {
+                  pages.push(i);
+                }
+              } else {
+                // 현재 페이지를 중심으로 앞뒤 2페이지씩 표시
+                let start = Math.max(1, page - 2);
+                let end = Math.min(pagination.pageCount, page + 2);
+
+                // 시작이 너무 앞에 있으면 끝을 조정
+                if (end - start < 4) {
+                  end = Math.min(pagination.pageCount, start + 4);
+                }
+
+                // 끝이 너무 뒤에 있으면 시작을 조정
+                if (end - start < 4) {
+                  start = Math.max(1, end - 4);
+                }
+
+                for (let i = start; i <= end; i++) {
+                  pages.push(i);
+                }
+              }
+
+              return pages.map(pageNum => (
+                <Link key={pageNum} href={`/articles?page=${pageNum}`}>
+                  <Button
+                    variant={pageNum === page ? "default" : "outline"}
+                    size="sm"
+                    className="w-10"
+                  >
+                    {pageNum}
+                  </Button>
+                </Link>
+              ));
+            })()}
+          </div>
+
+          {page < pagination.pageCount && (
+            <Link href={`/articles?page=${page + 1}`}>
+              <Button variant="outline" size="sm">
+                다음
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 }

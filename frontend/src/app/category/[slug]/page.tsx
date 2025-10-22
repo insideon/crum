@@ -108,7 +108,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           <div className="mb-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {articles.map((article) => (
+              {articles.map((article, index) => (
                 <Link key={article.id} href={`/articles/${article.slug}`}>
                   <Card className="group overflow-hidden hover-lift border-0 shadow-lg bg-gradient-to-br from-card to-card/50 cursor-pointer p-0">
                     <div className="relative h-40 overflow-hidden">
@@ -118,6 +118,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                           alt={article.featuredImage.alternativeText || article.title}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          loading={index === 0 ? "eager" : "lazy"}
                           className="object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                       ) : (
@@ -208,11 +209,36 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               )}
 
               <div className="flex items-center space-x-1">
-                {Array.from({ length: Math.min(5, pagination.pageCount) }, (_, i) => {
-                  const pageNum = Math.max(1, Math.min(page - 2 + i, pagination.pageCount - 4)) + i;
-                  if (pageNum > pagination.pageCount) return null;
+                {(() => {
+                  const pages = [];
+                  const maxVisible = 5;
 
-                  return (
+                  if (pagination.pageCount <= maxVisible) {
+                    // 총 페이지가 5개 이하면 모든 페이지 표시
+                    for (let i = 1; i <= pagination.pageCount; i++) {
+                      pages.push(i);
+                    }
+                  } else {
+                    // 현재 페이지를 중심으로 앞뒤 2페이지씩 표시
+                    let start = Math.max(1, page - 2);
+                    let end = Math.min(pagination.pageCount, page + 2);
+
+                    // 시작이 너무 앞에 있으면 끝을 조정
+                    if (end - start < 4) {
+                      end = Math.min(pagination.pageCount, start + 4);
+                    }
+
+                    // 끝이 너무 뒤에 있으면 시작을 조정
+                    if (end - start < 4) {
+                      start = Math.max(1, end - 4);
+                    }
+
+                    for (let i = start; i <= end; i++) {
+                      pages.push(i);
+                    }
+                  }
+
+                  return pages.map(pageNum => (
                     <Link key={pageNum} href={`/category/${slug}?page=${pageNum}`}>
                       <Button
                         variant={pageNum === page ? "default" : "outline"}
@@ -222,8 +248,8 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                         {pageNum}
                       </Button>
                     </Link>
-                  );
-                })}
+                  ));
+                })()}
               </div>
 
               {page < pagination.pageCount && (

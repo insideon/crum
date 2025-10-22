@@ -26,34 +26,22 @@ export function CategoryTabs({ categories }: CategoryTabsProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
         {categories.map((category) => (
           <Link key={category.id} href={`/category/${category.slug}`}>
-            <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-card to-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover-lift">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-2xl">{category.icon}</span>
-                  </div>
-                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+            <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-card to-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover-lift">
+              <div className="p-4 text-center">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-lg">{category.icon}</span>
                 </div>
 
-                <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-sm font-semibold mb-1 group-hover:text-primary transition-colors line-clamp-1">
                   {category.name}
                 </h3>
 
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                <p className="text-xs text-muted-foreground line-clamp-2">
                   {category.description}
                 </p>
-
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="text-xs">
-                    {category.articles ? `${category.articles.length}개 게시글` : '게시글 보기'}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors">
-                    탐색하기 →
-                  </span>
-                </div>
               </div>
 
               {/* 호버 효과 */}

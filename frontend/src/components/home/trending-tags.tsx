@@ -40,7 +40,6 @@ export function TrendingTags({ tags }: TrendingTagsProps) {
               >
                 <Hash className="h-3 w-3 mr-1" />
                 {tag.name}
-                <span className="ml-2 text-xs opacity-80">({tag.count})</span>
               </Badge>
             </Link>
           ))}

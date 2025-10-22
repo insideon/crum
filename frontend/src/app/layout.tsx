@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" data-scroll-behavior="smooth">
       <body className={`${inter.variable} font-sans antialiased`}>
         <div className="min-h-screen flex flex-col">
           <Header />

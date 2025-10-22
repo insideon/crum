@@ -80,6 +80,14 @@ export function Header() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
             </Link>
 
+            <Link
+              href="/tags"
+              className="relative text-sm font-medium transition-colors hover:text-primary group"
+            >
+              모든 태그
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+
             {/* Categories Dropdown */}
             <div className="relative">
               <button
@@ -140,13 +148,6 @@ export function Header() {
               </Button>
             </form>
 
-            {/* Trending Badge */}
-            <div className="hidden lg:flex items-center space-x-2">
-              <TrendingUp className="h-4 w-4 text-green-500" />
-              <Badge variant="secondary" className="text-xs font-medium">
-                실시간 트렌드
-              </Badge>
-            </div>
 
             <Button
               variant="ghost"
@@ -195,6 +196,14 @@ export function Header() {
               >
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 모든 게시글
+              </Link>
+              <Link
+                href="/tags"
+                className="flex items-center space-x-3 text-sm font-medium transition-colors hover:text-primary py-3 px-4 rounded-xl hover:bg-accent/50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                모든 태그
               </Link>
 
               {/* Mobile Categories */}

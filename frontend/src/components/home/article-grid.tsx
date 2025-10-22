@@ -134,6 +134,7 @@ export function ArticleGrid({ initialArticles }: ArticleGridProps) {
                   alt={article.featuredImage.alternativeText || article.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  loading={index === 0 ? "eager" : "lazy"}
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               ) : (

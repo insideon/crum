@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Eye, ArrowLeft, ChevronLeft, ChevronRight, Hash } from 'lucide-react';
+import { Calendar, Eye, ArrowLeft, ChevronLeft, ChevronRight, Hash, Clock, TrendingUp } from 'lucide-react';
 import { getArticles, getTags } from '@/lib/strapi';
 
 interface TagPageProps {
@@ -58,15 +58,17 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   let tag;
   let articlesResult;
   let allTags;
+  let allArticlesResult;
 
   try {
-    [allTags, articlesResult] = await Promise.all([
+    [allTags, articlesResult, allArticlesResult] = await Promise.all([
       getTags(),
       getArticles({
         tag: slug,
         page,
         pageSize
-      })
+      }),
+      getArticles({ pageSize: 1000 }) // 모든 게시글 가져오기 (조회수 계산용)
     ]);
 
     tag = allTags.find(t => t.slug === slug);
@@ -80,39 +82,55 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
 
   const articles = articlesResult.data;
   const pagination = articlesResult.meta.pagination;
+  const allArticles = allArticlesResult.data;
+
+  // 태그별 총 조회수 계산
+  const tagsWithViewCount = allTags.map(tag => {
+    const totalViews = allArticles
+      .filter(article => article.tags?.some(t => t.slug === tag.slug))
+      .reduce((sum, article) => sum + article.viewCount, 0);
+
+    return {
+      ...tag,
+      totalViews
+    };
+  });
+
+  // 조회수 기준으로 정렬 (내림차순)
+  const sortedTagsByViews = tagsWithViewCount.sort((a, b) => b.totalViews - a.totalViews);
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* 헤더 */}
       <div className="mb-8">
         <Link
-          href="/"
+          href="/tags"
           className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          홈으로 돌아가기
+          모든 태그 보기
         </Link>
 
         <div className="flex items-center space-x-3 mb-4">
           <Hash className="h-6 w-6 text-primary" />
           <h1 className="text-3xl font-bold">{tag.name}</h1>
-          <Badge variant="secondary" className="text-sm">
-            {tag.count}개 게시글
-          </Badge>
         </div>
 
         {/* 인기 태그 */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-3">인기 태그</h2>
           <div className="flex flex-wrap gap-2">
-            {allTags.slice(0, 10).map((t) => (
+            {sortedTagsByViews.slice(0, 10).map((t) => (
               <Link key={t.id} href={`/tag/${t.slug}`}>
                 <Badge
                   variant={t.slug === slug ? "default" : "outline"}
-                  className="hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className={`transition-all duration-300 hover:scale-105 px-4 py-2 ${
+                    t.slug === slug
+                      ? "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold"
+                      : "hover:bg-primary hover:text-primary-foreground"
+                  }`}
                 >
                   #{t.name}
-                  <span className="ml-1 text-xs opacity-70">({t.count})</span>
                 </Badge>
               </Link>
             ))}
@@ -136,76 +154,98 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
         <>
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-4">
-              #{tag.name} 태그 게시글 ({pagination.total}개)
+              #{tag.name} 태그 게시글
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article) => (
-                <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative h-48">
-                    {article.featuredImage ? (
-                      <Image
-                        src={article.featuredImage.url}
-                        alt={article.featuredImage.alternativeText || article.title}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-muted flex items-center justify-center">
-                        <span className="text-muted-foreground">이미지 없음</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>
-                            {new Date(article.publishedAt).toLocaleDateString('ko-KR')}
-                          </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {articles.map((article, index) => (
+                <Link key={article.id} href={`/articles/${article.slug}`}>
+                  <Card className="group overflow-hidden hover-lift border-0 shadow-lg bg-gradient-to-br from-card to-card/50 cursor-pointer p-0">
+                    <div className="relative h-40 overflow-hidden">
+                      {article.featuredImage ? (
+                        <Image
+                          src={article.featuredImage.url}
+                          alt={article.featuredImage.alternativeText || article.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          loading={index === 0 ? "eager" : "lazy"}
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+                          <span className="text-muted-foreground">이미지 없음</span>
                         </div>
-                        <div className="flex items-center space-x-1">
-                          <Eye className="h-4 w-4" />
-                          <span>{article.viewCount}</span>
-                        </div>
-                      </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
 
-                      <h3 className="text-lg font-bold line-clamp-2">
-                        <Link
-                          href={`/articles/${article.slug}`}
-                          className="hover:text-primary transition-colors"
-                        >
+                      {/* 카테고리 배지 */}
+                      {article.category && (
+                        <div className="absolute top-4 left-4">
+                          <Badge className="bg-white/90 text-foreground border-0 shadow-sm backdrop-blur-sm">
+                            {article.category.name}
+                          </Badge>
+                        </div>
+                      )}
+
+                      {/* 트렌드 점수 */}
+                      {article.trendScore && article.trendScore > 80 && (
+                        <div className="absolute top-4 right-4">
+                          <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-sm">
+                            <TrendingUp className="h-3 w-3 mr-1" />
+                            Hot
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+
+                    <CardContent className="p-4 pt-0">
+                      <div className="space-y-3">
+                        {/* 메타 정보 */}
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-1">
+                              <Calendar className="h-4 w-4" />
+                              <span>
+                                {new Date(article.publishedAt).toLocaleDateString('ko-KR')}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Eye className="h-4 w-4" />
+                              <span>{article.viewCount}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Clock className="h-4 w-4" />
+                            <span>3분 읽기</span>
+                          </div>
+                        </div>
+
+                        {/* 제목 */}
+                        <h3 className="text-lg font-bold line-clamp-1 group-hover:text-primary transition-colors">
                           {article.title}
-                        </Link>
-                      </h3>
+                        </h3>
 
-                      <p className="text-muted-foreground line-clamp-3">
-                        {article.excerpt}
-                      </p>
+                        {/* 요약 */}
+                        <p className="text-muted-foreground line-clamp-3 leading-relaxed text-sm h-[4.5rem]">
+                          {article.excerpt}
+                        </p>
 
-                      <div className="flex items-center justify-between">
+                        {/* 태그 */}
                         <div className="flex flex-wrap gap-1">
-                          {article.category && (
-                            <Badge variant="outline" className="text-xs">
-                              {article.category.name}
-                            </Badge>
-                          )}
                           {article.tags && article.tags.slice(0, 2).map((t) => (
                             <Badge
                               key={t.id}
                               variant={t.slug === slug ? "default" : "secondary"}
-                              className="text-xs"
+                              className="text-xs font-medium"
                             >
                               #{t.name}
                             </Badge>
                           ))}
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -223,11 +263,36 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
               )}
 
               <div className="flex items-center space-x-1">
-                {Array.from({ length: Math.min(5, pagination.pageCount) }, (_, i) => {
-                  const pageNum = Math.max(1, Math.min(page - 2 + i, pagination.pageCount - 4)) + i;
-                  if (pageNum > pagination.pageCount) return null;
+                {(() => {
+                  const pages = [];
+                  const maxVisible = 5;
 
-                  return (
+                  if (pagination.pageCount <= maxVisible) {
+                    // 총 페이지가 5개 이하면 모든 페이지 표시
+                    for (let i = 1; i <= pagination.pageCount; i++) {
+                      pages.push(i);
+                    }
+                  } else {
+                    // 현재 페이지를 중심으로 앞뒤 2페이지씩 표시
+                    let start = Math.max(1, page - 2);
+                    let end = Math.min(pagination.pageCount, page + 2);
+
+                    // 시작이 너무 앞에 있으면 끝을 조정
+                    if (end - start < 4) {
+                      end = Math.min(pagination.pageCount, start + 4);
+                    }
+
+                    // 끝이 너무 뒤에 있으면 시작을 조정
+                    if (end - start < 4) {
+                      start = Math.max(1, end - 4);
+                    }
+
+                    for (let i = start; i <= end; i++) {
+                      pages.push(i);
+                    }
+                  }
+
+                  return pages.map(pageNum => (
                     <Link key={pageNum} href={`/tag/${slug}?page=${pageNum}`}>
                       <Button
                         variant={pageNum === page ? "default" : "outline"}
@@ -237,8 +302,8 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                         {pageNum}
                       </Button>
                     </Link>
-                  );
-                })}
+                  ));
+                })()}
               </div>
 
               {page < pagination.pageCount && (
