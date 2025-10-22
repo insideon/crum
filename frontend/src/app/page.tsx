@@ -2,6 +2,7 @@ import { Hero } from '@/components/home/hero';
 import { ArticleGrid } from '@/components/home/article-grid';
 import { CategoryTabs } from '@/components/home/category-tabs';
 import { TrendingTags } from '@/components/home/trending-tags';
+import { HomePageAds } from '@/components/ads/placement';
 import { getArticles, getCategories, getTags } from '@/lib/strapi';
 
 export default async function HomePage() {
@@ -18,6 +19,9 @@ export default async function HomePage() {
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <Hero latestArticle={articles[0]} />
+
+      {/* 상단 광고 */}
+      <HomePageAds />
 
       {/* Category Tabs */}
       <CategoryTabs categories={categories} />

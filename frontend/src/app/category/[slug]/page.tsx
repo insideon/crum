@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Eye, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getArticles, getCategories } from '@/lib/strapi';
+import { CategoryPageAds } from '@/components/ads/placement';
 
 interface CategoryPageProps {
   params: {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   try {
     const categories = await getCategories();
     const category = categories.find(cat => cat.slug === params.slug);
-    
+
     if (!category) {
       return {
         title: '카테고리를 찾을 수 없습니다',
@@ -58,15 +59,15 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   try {
     [allCategories, articlesResult] = await Promise.all([
       getCategories(),
-      getArticles({ 
-        category: params.slug, 
-        page, 
-        pageSize 
+      getArticles({
+        category: params.slug,
+        page,
+        pageSize
       })
     ]);
 
     category = allCategories.find(cat => cat.slug === params.slug);
-    
+
     if (!category) {
       notFound();
     }
@@ -81,19 +82,19 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     <div className="container mx-auto px-4 py-8">
       {/* 헤더 */}
       <div className="mb-8">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           홈으로 돌아가기
         </Link>
-        
+
         <div className="flex items-center space-x-3 mb-4">
           {category.icon && <span className="text-2xl">{category.icon}</span>}
           <h1 className="text-3xl font-bold">{category.name}</h1>
         </div>
-        
+
         {category.description && (
           <p className="text-lg text-muted-foreground mb-6">
             {category.description}
@@ -104,7 +105,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         <div className="flex flex-wrap gap-2 mb-6">
           {allCategories.map((cat) => (
             <Link key={cat.id} href={`/category/${cat.slug}`}>
-              <Badge 
+              <Badge
                 variant={cat.slug === params.slug ? "default" : "outline"}
                 className="hover:bg-primary hover:text-primary-foreground transition-colors"
               >
@@ -115,6 +116,9 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           ))}
         </div>
       </div>
+
+      {/* 카테고리별 광고 */}
+      <CategoryPageAds category={params.slug} />
 
       {/* 게시글 목록 */}
       {articles.length === 0 ? (
@@ -134,7 +138,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
             <h2 className="text-xl font-semibold mb-4">
               {category.name} 게시글 ({pagination.total}개)
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.map((article) => (
                 <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -152,7 +156,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                       </div>
                     )}
                   </div>
-                  
+
                   <CardContent className="p-6">
                     <div className="space-y-4">
                       <div className="flex items-center space-x-4 text-sm text-muted-foreground">
@@ -167,20 +171,20 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                           <span>{article.viewCount}</span>
                         </div>
                       </div>
-                      
+
                       <h3 className="text-lg font-bold line-clamp-2">
-                        <Link 
+                        <Link
                           href={`/articles/${article.slug}`}
                           className="hover:text-primary transition-colors"
                         >
                           {article.title}
                         </Link>
                       </h3>
-                      
+
                       <p className="text-muted-foreground line-clamp-3">
                         {article.excerpt}
                       </p>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">
                           {article.tags && article.tags.slice(0, 2).map((tag) => (
@@ -208,15 +212,15 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                   </Button>
                 </Link>
               )}
-              
+
               <div className="flex items-center space-x-1">
                 {Array.from({ length: Math.min(5, pagination.pageCount) }, (_, i) => {
                   const pageNum = Math.max(1, Math.min(page - 2 + i, pagination.pageCount - 4)) + i;
                   if (pageNum > pagination.pageCount) return null;
-                  
+
                   return (
                     <Link key={pageNum} href={`/category/${params.slug}?page=${pageNum}`}>
-                      <Button 
+                      <Button
                         variant={pageNum === page ? "default" : "outline"}
                         size="sm"
                         className="w-10"
@@ -227,7 +231,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                   );
                 })}
               </div>
-              
+
               {page < pagination.pageCount && (
                 <Link href={`/category/${params.slug}?page=${page + 1}`}>
                   <Button variant="outline" size="sm">

@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Eye, ArrowLeft } from 'lucide-react';
 import { getArticle, getRelatedArticles } from '@/lib/strapi';
 import { ArticleJsonLd } from '@/components/article/article-json-ld';
+import { ArticlePageAds } from '@/components/ads/placement';
 
 interface ArticlePageProps {
   params: {
@@ -128,6 +129,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           className="prose prose-lg max-w-none dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
+
+        {/* 기사 중간 광고 */}
+        <ArticlePageAds keyword={article.sourceKeyword} category={article.category?.slug} />
 
         {/* Article Footer */}
         <footer className="mt-12 pt-8 border-t">
