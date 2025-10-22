@@ -1,46 +1,48 @@
-module.exports = {
-  kind: 'singleType',
-  info: {
-    singularName: 'advertisement',
-    pluralName: 'advertisements',
-    displayName: 'Advertisement',
-    description: 'Advertisement settings',
+{
+  "kind": "singleType",
+  "collectionName": "advertisements",
+  "info": {
+    "singularName": "advertisement",
+    "pluralName": "advertisements",
+    "displayName": "Advertisement",
+    "description": "Advertisement settings"
   },
-  options: {
-    draftAndPublish: false,
+  "options": {
+    "draftAndPublish": false
   },
-  attributes: {
-    adsenseEnabled: {
-      type: 'boolean',
-      default: false,
+  "pluginOptions": {},
+  "attributes": {
+    "adsenseEnabled": {
+      "type": "boolean",
+      "default": false
     },
-    adsenseClientId: {
-      type: 'string',
+    "adsenseClientId": {
+      "type": "string"
     },
-    adsenseSlots: {
-      type: 'json',
+    "adsenseSlots": {
+      "type": "json"
     },
-    coupangEnabled: {
-      type: 'boolean',
-      default: false,
+    "coupangEnabled": {
+      "type": "boolean",
+      "default": false
     },
-    coupangAccessKey: {
-      type: 'string',
+    "coupangAccessKey": {
+      "type": "string"
     },
-    coupangSecretKey: {
-      type: 'string',
+    "coupangSecretKey": {
+      "type": "string"
     },
-    coupangTrackingId: {
-      type: 'string',
+    "coupangTrackingId": {
+      "type": "string"
     },
-    adDensity: {
-      type: 'enumeration',
-      enum: ['low', 'medium', 'high'],
-      default: 'medium',
+    "adDensity": {
+      "type": "enumeration",
+      "enum": ["low", "medium", "high"],
+      "default": "medium"
     },
-    showAdOnMobile: {
-      type: 'boolean',
-      default: true,
-    },
-  },
-};
+    "showAdOnMobile": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,55 +1,57 @@
-module.exports = {
-  kind: 'singleType',
-  info: {
-    singularName: 'site-config',
-    pluralName: 'site-configs',
-    displayName: 'Site Config',
-    description: 'Site configuration',
+{
+  "kind": "singleType",
+  "collectionName": "site_configs",
+  "info": {
+    "singularName": "site-config",
+    "pluralName": "site-configs",
+    "displayName": "Site Config",
+    "description": "Site configuration"
   },
-  options: {
-    draftAndPublish: false,
+  "options": {
+    "draftAndPublish": false
   },
-  attributes: {
-    siteName: {
-      type: 'string',
-      required: true,
+  "pluginOptions": {},
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "required": true
     },
-    siteDescription: {
-      type: 'text',
+    "siteDescription": {
+      "type": "text"
     },
-    siteUrl: {
-      type: 'string',
-      required: true,
+    "siteUrl": {
+      "type": "string",
+      "required": true
     },
-    logoUrl: {
-      type: 'string',
+    "logoUrl": {
+      "type": "string"
     },
-    faviconUrl: {
-      type: 'string',
+    "faviconUrl": {
+      "type": "string"
     },
-    defaultOgImage: {
-      type: 'string',
+    "defaultOgImage": {
+      "type": "string"
     },
-    googleAnalyticsId: {
-      type: 'string',
+    "googleAnalyticsId": {
+      "type": "string"
     },
-    googleSearchConsoleId: {
-      type: 'string',
+    "googleSearchConsoleId": {
+      "type": "string"
     },
-    twitterHandle: {
-      type: 'string',
+    "twitterHandle": {
+      "type": "string"
     },
-    automationEnabled: {
-      type: 'boolean',
-      default: true,
+    "automationEnabled": {
+      "type": "boolean",
+      "default": true
     },
-    articlesPerDay: {
-      type: 'integer',
-      default: 8,
+    "articlesPerDay": {
+      "type": "integer",
+      "default": 8
     },
-    minTrendScore: {
-      type: 'decimal',
-      default: 0.5,
-    },
-  },
-};
+    "minTrendScore": {
+      "type": "decimal",
+      "default": 0.5
+    }
+  }
+}

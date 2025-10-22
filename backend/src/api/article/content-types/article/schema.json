@@ -1,85 +1,81 @@
-module.exports = {
-  kind: 'collectionType',
-  collectionName: 'articles',
-  info: {
-    singularName: 'article',
-    pluralName: 'articles',
-    displayName: 'Article',
-    description: 'Blog articles',
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "Article",
+    "description": "Blog articles"
   },
-  options: {
-    draftAndPublish: true,
+  "options": {
+    "draftAndPublish": true
   },
-  pluginOptions: {
-    i18n: {
-      localized: true,
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 255
     },
-  },
-  attributes: {
-    title: {
-      type: 'string',
-      required: true,
-      maxLength: 255,
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
     },
-    slug: {
-      type: 'uid',
-      targetField: 'title',
-      required: true,
+    "content": {
+      "type": "richtext",
+      "required": true
     },
-    content: {
-      type: 'richtext',
-      required: true,
+    "excerpt": {
+      "type": "text",
+      "maxLength": 500
     },
-    excerpt: {
-      type: 'text',
-      maxLength: 500,
+    "seoTitle": {
+      "type": "string",
+      "maxLength": 60
     },
-    seoTitle: {
-      type: 'string',
-      maxLength: 60,
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 160
     },
-    metaDescription: {
-      type: 'text',
-      maxLength: 160,
+    "keywords": {
+      "type": "json"
     },
-    keywords: {
-      type: 'json',
+    "sourceKeyword": {
+      "type": "string"
     },
-    sourceKeyword: {
-      type: 'string',
+    "trendScore": {
+      "type": "decimal"
     },
-    trendScore: {
-      type: 'decimal',
+    "viewCount": {
+      "type": "integer",
+      "default": 0
     },
-    viewCount: {
-      type: 'integer',
-      default: 0,
+    "status": {
+      "type": "enumeration",
+      "enum": ["draft", "published", "archived"],
+      "default": "draft"
     },
-    status: {
-      type: 'enumeration',
-      enum: ['draft', 'published', 'archived'],
-      default: 'draft',
+    "publishedAt": {
+      "type": "datetime"
     },
-    publishedAt: {
-      type: 'datetime',
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "articles"
     },
-    category: {
-      type: 'relation',
-      relation: 'manyToOne',
-      target: 'api::category.category',
-      inversedBy: 'articles',
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "inversedBy": "articles"
     },
-    tags: {
-      type: 'relation',
-      relation: 'manyToMany',
-      target: 'api::tag.tag',
-      inversedBy: 'articles',
-    },
-    featuredImage: {
-      type: 'media',
-      multiple: false,
-      required: false,
-      allowedTypes: ['images'],
-    },
-  },
-};
+    "featuredImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
