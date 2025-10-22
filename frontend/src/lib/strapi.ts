@@ -1,5 +1,6 @@
 // Strapi API 클라이언트 설정
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const USE_DUMMY_DATA = process.env.NEXT_PUBLIC_USE_DUMMY_DATA === 'true' || true; // 임시로 항상 더미 데이터 사용
 
 export interface Article {
   id: number;
@@ -68,6 +69,50 @@ export async function getArticles(params?: {
   tag?: string;
   search?: string;
 }): Promise<{ data: Article[]; meta: { pagination: any } }> {
+  // 더미 데이터 사용
+  if (USE_DUMMY_DATA) {
+    const { dummyArticles } = await import('./dummy-data');
+    let filteredArticles = [...dummyArticles];
+
+    // 필터링
+    if (params?.category) {
+      filteredArticles = filteredArticles.filter(
+        article => article.category?.slug === params.category
+      );
+    }
+    if (params?.tag) {
+      filteredArticles = filteredArticles.filter(
+        article => article.tags?.some(tag => tag.slug === params.tag)
+      );
+    }
+    if (params?.search) {
+      const searchLower = params.search.toLowerCase();
+      filteredArticles = filteredArticles.filter(
+        article => article.title.toLowerCase().includes(searchLower) ||
+                   article.excerpt.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // 페이지네이션
+    const page = params?.page || 1;
+    const pageSize = params?.pageSize || 20;
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const paginatedArticles = filteredArticles.slice(start, end);
+
+    return {
+      data: paginatedArticles,
+      meta: {
+        pagination: {
+          page,
+          pageSize,
+          pageCount: Math.ceil(filteredArticles.length / pageSize),
+          total: filteredArticles.length
+        }
+      }
+    };
+  }
+
   const searchParams = new URLSearchParams();
 
   if (params?.page) searchParams.append('pagination[page]', params.page.toString());
@@ -91,6 +136,18 @@ export async function getArticles(params?: {
 }
 
 export async function getArticle(slug: string): Promise<Article> {
+  // 더미 데이터 사용
+  if (USE_DUMMY_DATA) {
+    const { dummyArticles } = await import('./dummy-data');
+    const article = dummyArticles.find(a => a.slug === slug);
+
+    if (!article) {
+      throw new Error('Article not found');
+    }
+
+    return article;
+  }
+
   const response = await fetch(
     `${STRAPI_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`,
     {
@@ -112,6 +169,12 @@ export async function getArticle(slug: string): Promise<Article> {
 }
 
 export async function getCategories(): Promise<Category[]> {
+  // 더미 데이터 사용
+  if (USE_DUMMY_DATA) {
+    const { dummyCategories } = await import('./dummy-data');
+    return dummyCategories;
+  }
+
   const response = await fetch(`${STRAPI_URL}/api/categories?populate=articles&sort=order:asc`, {
     next: { revalidate: 3600 } // 1시간마다 재검증 (카테고리는 자주 변경되지 않음)
   });
@@ -125,6 +188,12 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getTags(): Promise<Tag[]> {
+  // 더미 데이터 사용
+  if (USE_DUMMY_DATA) {
+    const { dummyTags } = await import('./dummy-data');
+    return dummyTags;
+  }
+
   const response = await fetch(`${STRAPI_URL}/api/tags?populate=articles&sort=count:desc`, {
     next: { revalidate: 600 } // 10분마다 재검증
   });
@@ -151,6 +220,14 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 }
 
 export async function getRelatedArticles(articleId: number, limit: number = 5): Promise<Article[]> {
+  // 더미 데이터 사용
+  if (USE_DUMMY_DATA) {
+    const { dummyArticles } = await import('./dummy-data');
+    return dummyArticles
+      .filter(a => a.id !== articleId)
+      .slice(0, limit);
+  }
+
   const response = await fetch(
     `${STRAPI_URL}/api/articles?filters[id][$ne]=${articleId}&populate=*&pagination[limit]=${limit}&sort=publishedAt:desc`,
     {

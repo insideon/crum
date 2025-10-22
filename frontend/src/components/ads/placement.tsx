@@ -81,16 +81,13 @@ export function HomePageAds() {
       {/* 상단 배너 */}
       <AdPlacement type="banner" position="top" />
 
-      {/* 중간 쿠팡 상품 */}
-      <AdPlacement type="coupang" keyword="인기상품" position="middle" />
-
       {/* 하단 배너 */}
       <AdPlacement type="banner" position="bottom" />
     </div>
   );
 }
 
-export function ArticlePageAds({ keyword, category }: { keyword?: string; category?: string }) {
+export function ArticlePageAds({ keyword }: { keyword?: string }) {
   return (
     <div className="space-y-6">
       {/* 상단 배너 */}
