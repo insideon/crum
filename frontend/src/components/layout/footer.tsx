@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CrumLogo } from '@/components/ui/crum-logo';
 
 export function Footer() {
   return (
@@ -11,9 +12,7 @@ export function Footer() {
           <div className="space-y-6">
             <Link href="/" className="inline-block group">
               <div className="flex items-center space-x-3 group-hover:scale-105 transition-transform duration-300">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
-                  <span className="text-primary-foreground font-bold text-lg">C</span>
-                </div>
+                <CrumLogo size="xl" />
                 <div className="flex flex-col">
                   <span className="font-bold text-xl gradient-text">Crum Blog</span>
                   <span className="text-sm text-muted-foreground">최신 트렌드와 정보</span>

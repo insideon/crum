@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, Menu, Sparkles, TrendingUp, ChevronDown, Grid3X3 } from 'lucide-react';
+import { CrumLogo } from '@/components/ui/crum-logo';
+import { Search, Menu, TrendingUp, ChevronDown, Grid3X3 } from 'lucide-react';
 import { useState } from 'react';
 
 export function Header() {
@@ -51,12 +52,7 @@ export function Header() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                <Sparkles className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <div className="absolute -top-1 -right-1 h-3 w-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-pulse"></div>
-            </div>
+            <CrumLogo size="lg" className="group-hover:scale-105 transition-transform duration-300" />
             <div className="flex flex-col">
               <span className="font-bold text-xl gradient-text">Crum Blog</span>
             </div>
