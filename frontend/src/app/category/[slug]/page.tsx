@@ -7,7 +7,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Eye, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getArticles, getCategories } from '@/lib/strapi';
-import { CategoryPageAds } from '@/components/ads/placement';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -120,9 +119,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           ))}
         </div>
       </div>
-
-      {/* 카테고리별 광고 */}
-      <CategoryPageAds category={slug} />
 
       {/* 게시글 목록 */}
       {articles.length === 0 ? (
