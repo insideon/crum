@@ -84,10 +84,10 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   return (
     <div className="container mx-auto px-4 py-8">
       {/* 헤더 */}
-      <div className="mb-8">
-        <div className="flex items-center space-x-3 mb-4">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-3">
           {category.icon && <span className="text-3xl">{category.icon}</span>}
-          <h1 className="text-4xl font-bold gradient-text">{category.name}</h1>
+          <h2 className="text-4xl font-bold mb-2 gradient-text">{category.name}</h2>
         </div>
       </div>
 
