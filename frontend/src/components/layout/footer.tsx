@@ -14,7 +14,7 @@ export function Footer() {
               <span className="font-bold">Crum Blog</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              AI 기반 자동화 블로그로 최신 트렌드와 정보를 제공합니다.
+              데이터 기반 자동화 블로그로 최신 트렌드와 정보를 제공합니다.
             </p>
           </div>
 
@@ -33,13 +33,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/category/finance" className="text-muted-foreground hover:text-foreground transition-colors">
+                  경제/재테크
+                </Link>
+              </li>
+              <li>
                 <Link href="/category/lifestyle" className="text-muted-foreground hover:text-foreground transition-colors">
-                  생활
+                  생활/건강
                 </Link>
               </li>
               <li>
                 <Link href="/category/entertainment" className="text-muted-foreground hover:text-foreground transition-colors">
                   엔터테인먼트
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/sports" className="text-muted-foreground hover:text-foreground transition-colors">
+                  스포츠
                 </Link>
               </li>
             </ul>
@@ -79,9 +89,6 @@ export function Footer() {
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
           <p>&copy; 2024 Crum Blog. All rights reserved.</p>
-          <p className="mt-2">
-            이 사이트는 AI 기반 자동화 시스템으로 운영됩니다.
-          </p>
         </div>
       </div>
     </footer>

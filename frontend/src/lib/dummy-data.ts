@@ -147,19 +147,147 @@ export const dummyCategories: Category[] = [
   },
   {
     id: 3,
-    name: '생활',
-    slug: 'lifestyle',
-    description: '일상 생활 정보와 팁',
-    icon: '🏠',
+    name: '경제/재테크',
+    slug: 'finance',
+    description: '경제 동향과 재테크 정보',
+    icon: '💰',
     order: 3
   },
   {
     id: 4,
+    name: '생활/건강',
+    slug: 'lifestyle',
+    description: '일상 생활과 건강 정보',
+    icon: '🏠',
+    order: 4
+  },
+  {
+    id: 5,
     name: '엔터테인먼트',
     slug: 'entertainment',
-    description: '문화, 영화, 음악 등',
+    description: '문화, 영화, 음악, 게임',
     icon: '🎬',
-    order: 4
+    order: 5
+  },
+  {
+    id: 6,
+    name: '스포츠',
+    slug: 'sports',
+    description: '스포츠 뉴스와 경기 결과',
+    icon: '⚽',
+    order: 6
+  },
+  {
+    id: 7,
+    name: '여행/문화',
+    slug: 'travel',
+    description: '여행 정보와 문화 콘텐츠',
+    icon: '✈️',
+    order: 7
+  },
+  {
+    id: 8,
+    name: '요리/맛집',
+    slug: 'food',
+    description: '요리 레시피와 맛집 정보',
+    icon: '🍳',
+    order: 8
+  },
+  {
+    id: 9,
+    name: '패션/뷰티',
+    slug: 'fashion',
+    description: '패션 트렌드와 뷰티 정보',
+    icon: '👗',
+    order: 9
+  },
+  {
+    id: 10,
+    name: '교육/학습',
+    slug: 'education',
+    description: '교육 정보와 학습 팁',
+    icon: '📚',
+    order: 10
+  },
+  {
+    id: 11,
+    name: '자동차',
+    slug: 'automotive',
+    description: '자동차 뉴스와 리뷰',
+    icon: '🚗',
+    order: 11
+  },
+  {
+    id: 12,
+    name: '부동산',
+    slug: 'real-estate',
+    description: '부동산 시장 동향과 정보',
+    icon: '🏘️',
+    order: 12
+  },
+  {
+    id: 13,
+    name: '반려동물',
+    slug: 'pets',
+    description: '반려동물 케어와 정보',
+    icon: '🐕',
+    order: 13
+  },
+  {
+    id: 14,
+    name: '육아/가족',
+    slug: 'family',
+    description: '육아 정보와 가족 생활',
+    icon: '👶',
+    order: 14
+  },
+  {
+    id: 15,
+    name: '환경/에너지',
+    slug: 'environment',
+    description: '환경 보호와 에너지 정보',
+    icon: '🌱',
+    order: 15
+  },
+  {
+    id: 16,
+    name: '과학/연구',
+    slug: 'science',
+    description: '과학 연구와 발견',
+    icon: '🔬',
+    order: 16
+  },
+  {
+    id: 17,
+    name: '정치/사회',
+    slug: 'politics',
+    description: '정치 동향과 사회 이슈',
+    icon: '🏛️',
+    order: 17
+  },
+  {
+    id: 18,
+    name: '국제',
+    slug: 'international',
+    description: '국제 뉴스와 해외 동향',
+    icon: '🌍',
+    order: 18
+  },
+  {
+    id: 19,
+    name: '취업/직장',
+    slug: 'career',
+    description: '취업 정보와 직장 생활',
+    icon: '💼',
+    order: 19
+  },
+  {
+    id: 20,
+    name: '기타',
+    slug: 'etc',
+    description: '기타 다양한 주제',
+    icon: '📋',
+    order: 20
   }
 ];
 

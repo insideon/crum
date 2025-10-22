@@ -12,20 +12,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Crum Blog - AI 기반 자동화 블로그",
-  description: "AI 기반 자동 콘텐츠 생성과 트렌드 분석을 통해 최신 이슈와 정보를 제공하는 자동화 블로그",
-  keywords: ["블로그", "AI", "자동화", "트렌드", "뉴스", "정보"],
+  title: "Crum Blog - 최신 트렌드와 정보",
+  description: "데이터 기반 자동 콘텐츠 생성과 트렌드 분석을 통해 최신 이슈와 정보를 제공하는 블로그",
+  keywords: ["블로그", "트렌드", "뉴스", "정보", "데이터"],
   authors: [{ name: "Crum Blog Team" }],
   openGraph: {
-    title: "Crum Blog - AI 기반 자동화 블로그",
-    description: "AI 기반 자동 콘텐츠 생성과 트렌드 분석을 통해 최신 이슈와 정보를 제공하는 자동화 블로그",
+    title: "Crum Blog - 최신 트렌드와 정보",
+    description: "데이터 기반 자동 콘텐츠 생성과 트렌드 분석을 통해 최신 이슈와 정보를 제공하는 블로그",
     type: "website",
     locale: "ko_KR",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Crum Blog - AI 기반 자동화 블로그",
-    description: "AI 기반 자동 콘텐츠 생성과 트렌드 분석을 통해 최신 이슈와 정보를 제공하는 자동화 블로그",
+    title: "Crum Blog - 최신 트렌드와 정보",
+    description: "데이터 기반 자동 콘텐츠 생성과 트렌드 분석을 통해 최신 이슈와 정보를 제공하는 블로그",
   },
 };
 

@@ -1,12 +1,12 @@
 import { ArticleGrid } from '@/components/home/article-grid';
 import { CategoryTabs } from '@/components/home/category-tabs';
 import { TrendingTags } from '@/components/home/trending-tags';
-import { getPopularArticles, getCategories, getTags } from '@/lib/strapi';
+import { getPopularArticlesByPeriod, getCategories, getTags } from '@/lib/strapi';
 
 export default async function HomePage() {
   // 데이터 가져오기 (ISR: 5분마다 재생성)
   const [articlesResult, categories, tags] = await Promise.all([
-    getPopularArticles({ pageSize: 20 }),
+    getPopularArticlesByPeriod('week', { pageSize: 12 }), // 기본값: 이번 주
     getCategories(),
     getTags()
   ]);
@@ -15,8 +15,8 @@ export default async function HomePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Article Grid - 모든 기사 카드 형태로 표시 */}
-      <ArticleGrid articles={articles} />
+      {/* Article Grid - 기간별 필터링이 가능한 인기 게시글 */}
+      <ArticleGrid initialArticles={articles} />
 
       {/* Category Tabs */}
       <CategoryTabs categories={categories} />

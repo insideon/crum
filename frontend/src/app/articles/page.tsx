@@ -33,6 +33,7 @@ export default async function ArticlesPage() {
                     src={article.featuredImage.url}
                     alt={article.featuredImage.alternativeText || article.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 ) : (
@@ -80,7 +81,7 @@ export default async function ArticlesPage() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
-                      <span>{Math.ceil(Math.random() * 5) + 1}분 읽기</span>
+                      <span>3분 읽기</span>
                     </div>
                   </div>
 
