@@ -1,0 +1,46 @@
+module.exports = {
+  kind: 'singleType',
+  info: {
+    singularName: 'advertisement',
+    pluralName: 'advertisements',
+    displayName: 'Advertisement',
+    description: 'Advertisement settings',
+  },
+  options: {
+    draftAndPublish: false,
+  },
+  attributes: {
+    adsenseEnabled: {
+      type: 'boolean',
+      default: false,
+    },
+    adsenseClientId: {
+      type: 'string',
+    },
+    adsenseSlots: {
+      type: 'json',
+    },
+    coupangEnabled: {
+      type: 'boolean',
+      default: false,
+    },
+    coupangAccessKey: {
+      type: 'string',
+    },
+    coupangSecretKey: {
+      type: 'string',
+    },
+    coupangTrackingId: {
+      type: 'string',
+    },
+    adDensity: {
+      type: 'enumeration',
+      enum: ['low', 'medium', 'high'],
+      default: 'medium',
+    },
+    showAdOnMobile: {
+      type: 'boolean',
+      default: true,
+    },
+  },
+};

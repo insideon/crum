@@ -1,0 +1,55 @@
+module.exports = {
+  kind: 'singleType',
+  info: {
+    singularName: 'site-config',
+    pluralName: 'site-configs',
+    displayName: 'Site Config',
+    description: 'Site configuration',
+  },
+  options: {
+    draftAndPublish: false,
+  },
+  attributes: {
+    siteName: {
+      type: 'string',
+      required: true,
+    },
+    siteDescription: {
+      type: 'text',
+    },
+    siteUrl: {
+      type: 'string',
+      required: true,
+    },
+    logoUrl: {
+      type: 'string',
+    },
+    faviconUrl: {
+      type: 'string',
+    },
+    defaultOgImage: {
+      type: 'string',
+    },
+    googleAnalyticsId: {
+      type: 'string',
+    },
+    googleSearchConsoleId: {
+      type: 'string',
+    },
+    twitterHandle: {
+      type: 'string',
+    },
+    automationEnabled: {
+      type: 'boolean',
+      default: true,
+    },
+    articlesPerDay: {
+      type: 'integer',
+      default: 8,
+    },
+    minTrendScore: {
+      type: 'decimal',
+      default: 0.5,
+    },
+  },
+};
