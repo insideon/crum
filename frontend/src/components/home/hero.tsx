@@ -58,27 +58,27 @@ export function Hero({ latestArticle }: HeroProps) {
                   <span>{latestArticle.viewCount}</span>
                 </div>
               </div>
-              
+
               <h2 className="text-2xl font-bold line-clamp-2">
-                <Link 
+                <Link
                   href={`/articles/${latestArticle.slug}`}
                   className="hover:text-primary transition-colors"
                 >
                   {latestArticle.title}
                 </Link>
               </h2>
-              
+
               <p className="text-muted-foreground line-clamp-3">
                 {latestArticle.excerpt}
               </p>
-              
+
               <div className="flex items-center justify-between">
                 {latestArticle.category && (
                   <Badge variant="outline">
                     {latestArticle.category.name}
                   </Badge>
                 )}
-                <Link 
+                <Link
                   href={`/articles/${latestArticle.slug}`}
                   className="text-primary hover:underline font-medium"
                 >
@@ -99,7 +99,7 @@ export function Hero({ latestArticle }: HeroProps) {
               AI 기반 자동화 시스템으로 최신 트렌드와 정보를 실시간으로 제공하는 블로그입니다.
             </p>
           </div>
-          
+
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-primary rounded-full"></div>

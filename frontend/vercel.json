@@ -1,0 +1,30 @@
+# Vercel 배포 설정
+# 프론트엔드 배포를 위한 설정
+
+# 빌드 명령어
+buildCommand: npm run build
+
+# 출력 디렉토리
+outputDirectory: .next
+
+# 환경 변수
+env:
+  NEXT_PUBLIC_STRAPI_URL: $STRAPI_URL
+  NEXT_PUBLIC_SITE_URL: $SITE_URL
+
+# 리디렉션 설정
+redirects:
+  - source: /admin
+    destination: $STRAPI_URL/admin
+    permanent: false
+
+# 헤더 설정
+headers:
+  - source: /api/(.*)
+    headers:
+      - key: Access-Control-Allow-Origin
+        value: "*"
+      - key: Access-Control-Allow-Methods
+        value: "GET, POST, PUT, DELETE, OPTIONS"
+      - key: Access-Control-Allow-Headers
+        value: "Content-Type, Authorization"

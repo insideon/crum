@@ -13,7 +13,7 @@ module.exports = createCoreService('api::article.article', ({ strapi }) => ({
 
   async createWithSlug(data) {
     const slug = await this.generateSlug(data.title);
-    
+
     return await strapi.entityService.create('api::article.article', {
       data: {
         ...data,

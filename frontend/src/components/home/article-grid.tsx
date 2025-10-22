@@ -25,14 +25,14 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
     <section className="mb-12">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold">최신 게시글</h2>
-        <Link 
-          href="/articles" 
+        <Link
+          href="/articles"
           className="text-primary hover:underline font-medium"
         >
           모든 게시글 보기 →
         </Link>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article) => (
           <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -50,7 +50,7 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                 </div>
               )}
             </div>
-            
+
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 text-sm text-muted-foreground">
@@ -65,20 +65,20 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                     <span>{article.viewCount}</span>
                   </div>
                 </div>
-                
+
                 <h3 className="text-xl font-bold line-clamp-2">
-                  <Link 
+                  <Link
                     href={`/articles/${article.slug}`}
                     className="hover:text-primary transition-colors"
                   >
                     {article.title}
                   </Link>
                 </h3>
-                
+
                 <p className="text-muted-foreground line-clamp-3">
                   {article.excerpt}
                 </p>
-                
+
                 <div className="flex items-center justify-between">
                   <div className="flex flex-wrap gap-2">
                     {article.category && (

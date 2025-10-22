@@ -1,0 +1,25 @@
+# Railway 배포 설정
+# Strapi 백엔드 배포를 위한 설정
+
+# Node.js 버전
+node_version: "20"
+
+# 빌드 명령어
+build_command: npm run build
+
+# 시작 명령어
+start_command: npm start
+
+# 환경 변수 (Railway에서 설정)
+# DATABASE_URL: PostgreSQL 연결 문자열
+# ADMIN_JWT_SECRET: 관리자 JWT 시크릿
+# API_TOKEN_SALT: API 토큰 솔트
+# FRONTEND_URL: 프론트엔드 URL
+
+# 포트 설정
+port: 1337
+
+# 헬스체크
+healthcheck:
+  path: /admin
+  timeout: 30

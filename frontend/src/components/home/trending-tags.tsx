@@ -17,8 +17,8 @@ export function TrendingTags({ tags }: TrendingTagsProps) {
       <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
           <Link key={tag.id} href={`/tag/${tag.slug}`}>
-            <Badge 
-              variant="secondary" 
+            <Badge
+              variant="secondary"
               className="px-3 py-1 text-sm hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"
             >
               #{tag.name}

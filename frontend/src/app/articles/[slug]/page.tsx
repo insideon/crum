@@ -17,7 +17,7 @@ interface ArticlePageProps {
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   try {
     const article = await getArticle(params.slug);
-    
+
     return {
       title: article.seoTitle || article.title,
       description: article.metaDescription || article.excerpt,
@@ -65,10 +65,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     <div className="container mx-auto px-4 py-8">
       {/* JSON-LD Structured Data */}
       <ArticleJsonLd article={article} />
-      
+
       {/* Back Button */}
-      <Link 
-        href="/" 
+      <Link
+        href="/"
         className="inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -96,7 +96,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
 
           <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
-          
+
           <div className="flex flex-wrap gap-2 mb-6">
             {article.category && (
               <Badge variant="outline">
@@ -124,7 +124,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </header>
 
         {/* Article Content */}
-        <div 
+        <div
           className="prose prose-lg max-w-none dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
@@ -165,21 +165,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     </div>
                   )}
                 </div>
-                
+
                 <CardContent className="p-6">
                   <h3 className="text-lg font-bold line-clamp-2 mb-2">
-                    <Link 
+                    <Link
                       href={`/articles/${relatedArticle.slug}`}
                       className="hover:text-primary transition-colors"
                     >
                       {relatedArticle.title}
                     </Link>
                   </h3>
-                  
+
                   <p className="text-muted-foreground line-clamp-3 text-sm">
                     {relatedArticle.excerpt}
                   </p>
-                  
+
                   <div className="mt-4 flex items-center justify-between">
                     {relatedArticle.category && (
                       <Badge variant="outline" className="text-xs">

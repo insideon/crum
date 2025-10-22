@@ -17,8 +17,8 @@ export function CategoryTabs({ categories }: CategoryTabsProps) {
       <div className="flex flex-wrap gap-3">
         {categories.map((category) => (
           <Link key={category.id} href={`/category/${category.slug}`}>
-            <Badge 
-              variant="outline" 
+            <Badge
+              variant="outline"
               className="px-4 py-2 text-sm hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer"
             >
               {category.icon && <span className="mr-2">{category.icon}</span>}

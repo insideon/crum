@@ -1,0 +1,55 @@
+# Docker Compose 설정
+# 로컬 개발 환경을 위한 설정
+
+version: '3.8'
+
+services:
+  # Strapi Backend
+  backend:
+    build: ./backend
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_FILENAME=.tmp/data.db
+      - ADMIN_JWT_SECRET=crum-blog-admin-secret
+      - API_TOKEN_SALT=crum-blog-api-token-salt
+      - FRONTEND_URL=http://localhost:3000
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run develop
+
+  # Next.js Frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
+      - NEXT_PUBLIC_SITE_URL=http://localhost:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+    depends_on:
+      - backend
+
+  # PostgreSQL (프로덕션용)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=crum_blog
+      - POSTGRES_USER=crum_user
+      - POSTGRES_PASSWORD=crum_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
