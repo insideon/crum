@@ -224,7 +224,7 @@ export default function SearchPage() {
                       </h3>
 
                       {/* 요약 */}
-                      <p className="text-muted-foreground line-clamp-3 leading-relaxed text-sm h-[4.5rem]">
+                      <p className="text-muted-foreground line-clamp-3 leading-relaxed text-sm h-18">
                         {article.excerpt}
                       </p>
 

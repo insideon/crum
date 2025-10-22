@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
+type Period = "today" | "week" | "month" | "year";
+
 interface PeriodSelectorProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: Period;
+  onChange: (value: Period) => void;
 }
 
-const periods = [
+const periods: { value: Period; label: string }[] = [
   { value: "today", label: "오늘" },
   { value: "week", label: "이번 주" },
   { value: "month", label: "이번 달" },
