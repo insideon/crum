@@ -79,7 +79,9 @@ export async function getArticles(params?: {
   searchParams.append('populate', '*');
   searchParams.append('sort', 'publishedAt:desc');
 
-  const response = await fetch(`${STRAPI_URL}/api/articles?${searchParams}`);
+  const response = await fetch(`${STRAPI_URL}/api/articles?${searchParams}`, {
+    next: { revalidate: 300 } // 5분마다 재검증 (ISR)
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch articles');
@@ -90,7 +92,10 @@ export async function getArticles(params?: {
 
 export async function getArticle(slug: string): Promise<Article> {
   const response = await fetch(
-    `${STRAPI_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`
+    `${STRAPI_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`,
+    {
+      next: { revalidate: 300 } // 5분마다 재검증 (ISR)
+    }
   );
 
   if (!response.ok) {
@@ -107,7 +112,9 @@ export async function getArticle(slug: string): Promise<Article> {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(`${STRAPI_URL}/api/categories?populate=articles&sort=order:asc`);
+  const response = await fetch(`${STRAPI_URL}/api/categories?populate=articles&sort=order:asc`, {
+    next: { revalidate: 3600 } // 1시간마다 재검증 (카테고리는 자주 변경되지 않음)
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch categories');
@@ -118,7 +125,9 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getTags(): Promise<Tag[]> {
-  const response = await fetch(`${STRAPI_URL}/api/tags?populate=articles&sort=count:desc`);
+  const response = await fetch(`${STRAPI_URL}/api/tags?populate=articles&sort=count:desc`, {
+    next: { revalidate: 600 } // 10분마다 재검증
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch tags');
@@ -129,7 +138,9 @@ export async function getTags(): Promise<Tag[]> {
 }
 
 export async function getSiteConfig(): Promise<SiteConfig> {
-  const response = await fetch(`${STRAPI_URL}/api/site-config`);
+  const response = await fetch(`${STRAPI_URL}/api/site-config`, {
+    next: { revalidate: 3600 } // 1시간마다 재검증 (사이트 설정은 자주 변경되지 않음)
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch site config');
@@ -141,7 +152,10 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 
 export async function getRelatedArticles(articleId: number, limit: number = 5): Promise<Article[]> {
   const response = await fetch(
-    `${STRAPI_URL}/api/articles?filters[id][$ne]=${articleId}&populate=*&pagination[limit]=${limit}&sort=publishedAt:desc`
+    `${STRAPI_URL}/api/articles?filters[id][$ne]=${articleId}&populate=*&pagination[limit]=${limit}&sort=publishedAt:desc`,
+    {
+      next: { revalidate: 300 } // 5분마다 재검증
+    }
   );
 
   if (!response.ok) {

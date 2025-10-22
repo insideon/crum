@@ -10,18 +10,20 @@ import { getArticles, getCategories } from '@/lib/strapi';
 import { CategoryPageAds } from '@/components/ads/placement';
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
   try {
     const categories = await getCategories();
-    const category = categories.find(cat => cat.slug === params.slug);
+    const category = categories.find(cat => cat.slug === slug);
 
     if (!category) {
       return {
@@ -49,7 +51,9 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 }
 
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const page = Number(searchParams.page) || 1;
+  const { slug } = await params;
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
   const pageSize = 12;
 
   let category;
@@ -60,13 +64,13 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
     [allCategories, articlesResult] = await Promise.all([
       getCategories(),
       getArticles({
-        category: params.slug,
+        category: slug,
         page,
         pageSize
       })
     ]);
 
-    category = allCategories.find(cat => cat.slug === params.slug);
+    category = allCategories.find(cat => cat.slug === slug);
 
     if (!category) {
       notFound();
@@ -106,7 +110,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           {allCategories.map((cat) => (
             <Link key={cat.id} href={`/category/${cat.slug}`}>
               <Badge
-                variant={cat.slug === params.slug ? "default" : "outline"}
+                variant={cat.slug === slug ? "default" : "outline"}
                 className="hover:bg-primary hover:text-primary-foreground transition-colors"
               >
                 {cat.icon && <span className="mr-1">{cat.icon}</span>}
@@ -118,7 +122,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
       </div>
 
       {/* 카테고리별 광고 */}
-      <CategoryPageAds category={params.slug} />
+      <CategoryPageAds category={slug} />
 
       {/* 게시글 목록 */}
       {articles.length === 0 ? (
@@ -205,7 +209,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
           {pagination.pageCount > 1 && (
             <div className="flex items-center justify-center space-x-2 mt-8">
               {page > 1 && (
-                <Link href={`/category/${params.slug}?page=${page - 1}`}>
+                <Link href={`/category/${slug}?page=${page - 1}`}>
                   <Button variant="outline" size="sm">
                     <ChevronLeft className="h-4 w-4 mr-1" />
                     이전
@@ -219,7 +223,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                   if (pageNum > pagination.pageCount) return null;
 
                   return (
-                    <Link key={pageNum} href={`/category/${params.slug}?page=${pageNum}`}>
+                    <Link key={pageNum} href={`/category/${slug}?page=${pageNum}`}>
                       <Button
                         variant={pageNum === page ? "default" : "outline"}
                         size="sm"
@@ -233,7 +237,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               </div>
 
               {page < pagination.pageCount && (
-                <Link href={`/category/${params.slug}?page=${page + 1}`}>
+                <Link href={`/category/${slug}?page=${page + 1}`}>
                   <Button variant="outline" size="sm">
                     다음
                     <ChevronRight className="h-4 w-4 ml-1" />

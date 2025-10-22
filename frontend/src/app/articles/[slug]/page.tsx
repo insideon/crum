@@ -10,14 +10,16 @@ import { ArticleJsonLd } from '@/components/article/article-json-ld';
 import { ArticlePageAds } from '@/components/ads/placement';
 
 interface ArticlePageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
+  const { slug } = await params;
+
   try {
-    const article = await getArticle(params.slug);
+    const article = await getArticle(slug);
 
     return {
       title: article.seoTitle || article.title,
@@ -52,11 +54,12 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
+  const { slug } = await params;
   let article;
   let relatedArticles = [];
 
   try {
-    article = await getArticle(params.slug);
+    article = await getArticle(slug);
     relatedArticles = await getRelatedArticles(article.id, 5);
   } catch {
     notFound();

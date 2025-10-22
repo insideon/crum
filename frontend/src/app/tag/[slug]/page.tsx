@@ -9,18 +9,20 @@ import { Calendar, Eye, ArrowLeft, ChevronLeft, ChevronRight, Hash } from 'lucid
 import { getArticles, getTags } from '@/lib/strapi';
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
   try {
     const tags = await getTags();
-    const tag = tags.find(t => t.slug === params.slug);
+    const tag = tags.find(t => t.slug === slug);
 
     if (!tag) {
       return {
@@ -48,7 +50,9 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 }
 
 export default async function TagPage({ params, searchParams }: TagPageProps) {
-  const page = Number(searchParams.page) || 1;
+  const { slug } = await params;
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
   const pageSize = 12;
 
   let tag;
@@ -59,13 +63,13 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
     [allTags, articlesResult] = await Promise.all([
       getTags(),
       getArticles({
-        tag: params.slug,
+        tag: slug,
         page,
         pageSize
       })
     ]);
 
-    tag = allTags.find(t => t.slug === params.slug);
+    tag = allTags.find(t => t.slug === slug);
 
     if (!tag) {
       notFound();
@@ -104,7 +108,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
             {allTags.slice(0, 10).map((t) => (
               <Link key={t.id} href={`/tag/${t.slug}`}>
                 <Badge
-                  variant={t.slug === params.slug ? "default" : "outline"}
+                  variant={t.slug === slug ? "default" : "outline"}
                   className="hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
                   #{t.name}
@@ -191,7 +195,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                           {article.tags && article.tags.slice(0, 2).map((t) => (
                             <Badge
                               key={t.id}
-                              variant={t.slug === params.slug ? "default" : "secondary"}
+                              variant={t.slug === slug ? "default" : "secondary"}
                               className="text-xs"
                             >
                               #{t.name}
@@ -210,7 +214,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
           {pagination.pageCount > 1 && (
             <div className="flex items-center justify-center space-x-2 mt-8">
               {page > 1 && (
-                <Link href={`/tag/${params.slug}?page=${page - 1}`}>
+                <Link href={`/tag/${slug}?page=${page - 1}`}>
                   <Button variant="outline" size="sm">
                     <ChevronLeft className="h-4 w-4 mr-1" />
                     이전
@@ -224,7 +228,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                   if (pageNum > pagination.pageCount) return null;
 
                   return (
-                    <Link key={pageNum} href={`/tag/${params.slug}?page=${pageNum}`}>
+                    <Link key={pageNum} href={`/tag/${slug}?page=${pageNum}`}>
                       <Button
                         variant={pageNum === page ? "default" : "outline"}
                         size="sm"
@@ -238,7 +242,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
               </div>
 
               {page < pagination.pageCount && (
-                <Link href={`/tag/${params.slug}?page=${page + 1}`}>
+                <Link href={`/tag/${slug}?page=${page + 1}`}>
                   <Button variant="outline" size="sm">
                     다음
                     <ChevronRight className="h-4 w-4 ml-1" />
