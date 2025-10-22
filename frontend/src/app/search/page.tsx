@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ export default function SearchPage() {
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 12;
 
-  const handleSearch = async (searchQuery: string, page: number = 1) => {
+  const handleSearch = useCallback(async (searchQuery: string, page: number = 1) => {
     if (!searchQuery.trim()) {
       setResults([]);
       setTotalPages(1);
@@ -80,13 +80,21 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pageSize]);
 
+  // searchParams가 변경될 때마다 query 상태 업데이트
+  useEffect(() => {
+    const newQuery = searchParams.get('q') || '';
+    setQuery(newQuery);
+  }, [searchParams]);
+
+  // query가 변경될 때마다 검색 실행
   useEffect(() => {
     if (query) {
-      handleSearch(query);
+      setCurrentPage(1);
+      handleSearch(query, 1);
     }
-  }, []);
+  }, [query, handleSearch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
