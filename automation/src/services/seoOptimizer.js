@@ -13,7 +13,7 @@ class SEOOptimizer {
    */
   async optimizeArticle(article, keyword, category) {
     logger.info(`SEO 최적화 시작: ${article.title}`);
-    
+
     try {
       const optimized = {
         ...article,
@@ -83,14 +83,14 @@ class SEOOptimizer {
    */
   extractKeywords(content, mainKeyword) {
     const keywords = [mainKeyword];
-    
+
     // 콘텐츠에서 중요한 단어 추출
     const words = content
       .replace(/[^\w\s가-힣]/g, ' ')
       .split(/\s+/)
-      .filter(word => 
-        word.length >= 2 && 
-        word.length <= 10 && 
+      .filter(word =>
+        word.length >= 2 &&
+        word.length <= 10 &&
         !this.stopWords.includes(word) &&
         !keywords.includes(word)
       );
@@ -191,10 +191,10 @@ class SEOOptimizer {
    */
   optimizeParagraphs(content) {
     const paragraphs = content.split(/\n\s*\n/);
-    
+
     return paragraphs.map(paragraph => {
       const sentences = paragraph.split(/[.!?]/);
-      
+
       // 너무 긴 문단은 분할
       if (sentences.length > 5) {
         const midPoint = Math.floor(sentences.length / 2);
@@ -202,7 +202,7 @@ class SEOOptimizer {
         const secondHalf = sentences.slice(midPoint).join('.');
         return `${firstHalf}\n\n${secondHalf}`;
       }
-      
+
       return paragraph;
     }).join('\n\n');
   }

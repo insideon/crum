@@ -15,7 +15,7 @@ class CollectTrendsJob {
    */
   async run() {
     logger.info('=== 트렌드 수집 Job 시작 ===');
-    
+
     try {
       // 1. Strapi 연결 확인
       const isHealthy = await this.strapiClient.healthCheck();
@@ -26,7 +26,7 @@ class CollectTrendsJob {
       // 2. 트렌드 데이터 수집
       logger.info('트렌드 데이터 수집 시작...');
       this.trends = await this.trendCollector.collectAllTrends();
-      
+
       if (this.trends.length === 0) {
         logger.warn('수집된 트렌드가 없습니다.');
         return;
@@ -35,13 +35,13 @@ class CollectTrendsJob {
       // 3. 중복 제거 (기존 게시글과 비교)
       logger.info('중복 키워드 필터링 시작...');
       const filteredTrends = await this.filterExistingKeywords(this.trends);
-      
+
       logger.info(`중복 제거 후 ${filteredTrends.length}개 키워드 남음`);
 
       // 4. 최소 트렌드 점수 필터링
       const minScore = parseFloat(process.env.MIN_TREND_SCORE) || 0.5;
       const qualifiedTrends = filteredTrends.filter(trend => trend.trendScore >= minScore);
-      
+
       logger.info(`최소 점수(${minScore}) 이상 키워드: ${qualifiedTrends.length}개`);
 
       // 5. 결과 저장 (임시로 로그에 출력, 추후 DB 저장 구현)
@@ -51,7 +51,7 @@ class CollectTrendsJob {
       this.logStatistics(qualifiedTrends);
 
       logger.info('=== 트렌드 수집 Job 완료 ===');
-      
+
       return qualifiedTrends;
     } catch (error) {
       logger.error('트렌드 수집 Job 실패:', error);
@@ -77,7 +77,7 @@ class CollectTrendsJob {
       });
 
       logger.info(`기존 게시글과 중복되는 키워드 ${trends.length - filteredTrends.length}개 제거`);
-      
+
       return filteredTrends;
     } catch (error) {
       logger.error('중복 키워드 필터링 실패:', error);
@@ -103,7 +103,7 @@ class CollectTrendsJob {
 
       // TODO: Redis나 임시 DB에 저장하여 콘텐츠 생성 Job에서 사용
       // await this.saveToCache(trends);
-      
+
     } catch (error) {
       logger.error('트렌드 저장 실패:', error);
     }

@@ -61,16 +61,16 @@ export default function SearchPage() {
     <div className="container mx-auto px-4 py-8">
       {/* 헤더 */}
       <div className="mb-8">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           홈으로 돌아가기
         </Link>
-        
+
         <h1 className="text-3xl font-bold mb-6">검색</h1>
-        
+
         {/* 검색 폼 */}
         <form onSubmit={handleSubmit} className="max-w-2xl">
           <div className="flex gap-2">
@@ -163,7 +163,7 @@ export default function SearchPage() {
 
                       {/* 제목 */}
                       <h3 className="text-xl font-bold line-clamp-2">
-                        <Link 
+                        <Link
                           href={`/articles/${article.slug}`}
                           className="hover:text-primary transition-colors"
                         >
@@ -190,7 +190,7 @@ export default function SearchPage() {
                             </Badge>
                           ))}
                         </div>
-                        <Link 
+                        <Link
                           href={`/articles/${article.slug}`}
                           className="text-primary hover:underline font-medium text-sm"
                         >

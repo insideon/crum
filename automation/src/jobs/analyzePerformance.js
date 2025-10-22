@@ -12,7 +12,7 @@ class AnalyzePerformanceJob {
    */
   async run() {
     logger.info('=== 성과 분석 Job 시작 ===');
-    
+
     try {
       // 1. Strapi 연결 확인
       const isHealthy = await this.strapiClient.healthCheck();
@@ -22,19 +22,19 @@ class AnalyzePerformanceJob {
 
       // 2. 일일 통계 수집
       const dailyStats = await this.collectDailyStats();
-      
+
       // 3. 인기 게시글 분석
       const popularArticles = await this.analyzePopularArticles();
-      
+
       // 4. 카테고리별 성과 분석
       const categoryStats = await this.analyzeCategoryPerformance();
-      
+
       // 5. 키워드 성과 분석
       const keywordStats = await this.analyzeKeywordPerformance();
-      
+
       // 6. 트렌드 분석
       const trendAnalysis = await this.analyzeTrends();
-      
+
       // 7. 결과 종합 및 로깅
       const analysis = {
         date: new Date().toISOString().split('T')[0],
@@ -46,7 +46,7 @@ class AnalyzePerformanceJob {
       };
 
       await this.logAnalysis(analysis);
-      
+
       logger.info('=== 성과 분석 Job 완료 ===');
       return analysis;
     } catch (error) {
@@ -63,7 +63,7 @@ class AnalyzePerformanceJob {
       const today = new Date();
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
-      
+
       const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const yesterdayStart = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
 
@@ -125,7 +125,7 @@ class AnalyzePerformanceJob {
       });
 
       const articles = response.data.data || [];
-      
+
       return articles.map(article => ({
         id: article.id,
         title: article.title,
@@ -208,7 +208,7 @@ class AnalyzePerformanceJob {
               trendScores: []
             };
           }
-          
+
           keywordStats[keyword].articleCount++;
           keywordStats[keyword].totalViews += article.viewCount || 0;
           keywordStats[keyword].trendScores.push(article.trendScore || 0);
@@ -217,7 +217,7 @@ class AnalyzePerformanceJob {
 
       // 평균 트렌드 점수 계산
       Object.values(keywordStats).forEach(stat => {
-        stat.avgTrendScore = stat.trendScores.length > 0 ? 
+        stat.avgTrendScore = stat.trendScores.length > 0 ?
           stat.trendScores.reduce((sum, score) => sum + score, 0) / stat.trendScores.length : 0;
         stat.avgViews = stat.articleCount > 0 ? stat.totalViews / stat.articleCount : 0;
         delete stat.trendScores; // 메모리 절약
@@ -250,7 +250,7 @@ class AnalyzePerformanceJob {
       });
 
       const articles = response.data.data || [];
-      
+
       // 일별 트렌드 점수 평균
       const dailyTrends = {};
       articles.forEach(article => {
@@ -270,7 +270,7 @@ class AnalyzePerformanceJob {
 
       return {
         weeklyTrendData: trendData,
-        avgWeeklyTrendScore: trendData.length > 0 ? 
+        avgWeeklyTrendScore: trendData.length > 0 ?
           trendData.reduce((sum, day) => sum + day.avgTrendScore, 0) / trendData.length : 0,
         totalArticlesThisWeek: articles.length
       };

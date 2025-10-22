@@ -4,24 +4,24 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   LineChart,
   Line,
   Area,
   AreaChart
 } from 'recharts';
-import { 
-  Zap, 
-  Clock, 
-  HardDrive, 
-  Wifi, 
+import {
+  Zap,
+  Clock,
+  HardDrive,
+  Wifi,
   RefreshCw,
   TrendingUp,
   TrendingDown,

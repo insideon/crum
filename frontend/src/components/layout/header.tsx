@@ -35,32 +35,32 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="text-sm font-medium transition-colors hover:text-primary"
             >
               홈
             </Link>
-            <Link 
-              href="/category/news" 
+            <Link
+              href="/category/news"
               className="text-sm font-medium transition-colors hover:text-primary"
             >
               뉴스/시사
             </Link>
-            <Link 
-              href="/category/tech" 
+            <Link
+              href="/category/tech"
               className="text-sm font-medium transition-colors hover:text-primary"
             >
               기술/IT
             </Link>
-            <Link 
-              href="/category/lifestyle" 
+            <Link
+              href="/category/lifestyle"
               className="text-sm font-medium transition-colors hover:text-primary"
             >
               생활
             </Link>
-            <Link 
-              href="/category/entertainment" 
+            <Link
+              href="/category/entertainment"
               className="text-sm font-medium transition-colors hover:text-primary"
             >
               엔터테인먼트
@@ -85,10 +85,10 @@ export function Header() {
                 검색
               </Button>
             </form>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
+
+            <Button
+              variant="ghost"
+              size="sm"
               className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -115,36 +115,36 @@ export function Header() {
             </form>
 
             <nav className="flex flex-col space-y-2">
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="text-sm font-medium transition-colors hover:text-primary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 홈
               </Link>
-              <Link 
-                href="/category/news" 
+              <Link
+                href="/category/news"
                 className="text-sm font-medium transition-colors hover:text-primary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 뉴스/시사
               </Link>
-              <Link 
-                href="/category/tech" 
+              <Link
+                href="/category/tech"
                 className="text-sm font-medium transition-colors hover:text-primary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 기술/IT
               </Link>
-              <Link 
-                href="/category/lifestyle" 
+              <Link
+                href="/category/lifestyle"
                 className="text-sm font-medium transition-colors hover:text-primary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 생활
               </Link>
-              <Link 
-                href="/category/entertainment" 
+              <Link
+                href="/category/entertainment"
                 className="text-sm font-medium transition-colors hover:text-primary py-2"
                 onClick={() => setIsMenuOpen(false)}
               >

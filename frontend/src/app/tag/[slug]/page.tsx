@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   try {
     const tags = await getTags();
     const tag = tags.find(t => t.slug === params.slug);
-    
+
     if (!tag) {
       return {
         title: '태그를 찾을 수 없습니다',
@@ -58,15 +58,15 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
   try {
     [allTags, articlesResult] = await Promise.all([
       getTags(),
-      getArticles({ 
-        tag: params.slug, 
-        page, 
-        pageSize 
+      getArticles({
+        tag: params.slug,
+        page,
+        pageSize
       })
     ]);
 
     tag = allTags.find(t => t.slug === params.slug);
-    
+
     if (!tag) {
       notFound();
     }
@@ -81,14 +81,14 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
     <div className="container mx-auto px-4 py-8">
       {/* 헤더 */}
       <div className="mb-8">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           홈으로 돌아가기
         </Link>
-        
+
         <div className="flex items-center space-x-3 mb-4">
           <Hash className="h-6 w-6 text-primary" />
           <h1 className="text-3xl font-bold">{tag.name}</h1>
@@ -103,7 +103,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
           <div className="flex flex-wrap gap-2">
             {allTags.slice(0, 10).map((t) => (
               <Link key={t.id} href={`/tag/${t.slug}`}>
-                <Badge 
+                <Badge
                   variant={t.slug === params.slug ? "default" : "outline"}
                   className="hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
@@ -134,7 +134,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
             <h2 className="text-xl font-semibold mb-4">
               #{tag.name} 태그 게시글 ({pagination.total}개)
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.map((article) => (
                 <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -152,7 +152,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                       </div>
                     )}
                   </div>
-                  
+
                   <CardContent className="p-6">
                     <div className="space-y-4">
                       <div className="flex items-center space-x-4 text-sm text-muted-foreground">
@@ -167,20 +167,20 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                           <span>{article.viewCount}</span>
                         </div>
                       </div>
-                      
+
                       <h3 className="text-lg font-bold line-clamp-2">
-                        <Link 
+                        <Link
                           href={`/articles/${article.slug}`}
                           className="hover:text-primary transition-colors"
                         >
                           {article.title}
                         </Link>
                       </h3>
-                      
+
                       <p className="text-muted-foreground line-clamp-3">
                         {article.excerpt}
                       </p>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">
                           {article.category && (
@@ -189,9 +189,9 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                             </Badge>
                           )}
                           {article.tags && article.tags.slice(0, 2).map((t) => (
-                            <Badge 
-                              key={t.id} 
-                              variant={t.slug === params.slug ? "default" : "secondary"} 
+                            <Badge
+                              key={t.id}
+                              variant={t.slug === params.slug ? "default" : "secondary"}
                               className="text-xs"
                             >
                               #{t.name}
@@ -217,15 +217,15 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                   </Button>
                 </Link>
               )}
-              
+
               <div className="flex items-center space-x-1">
                 {Array.from({ length: Math.min(5, pagination.pageCount) }, (_, i) => {
                   const pageNum = Math.max(1, Math.min(page - 2 + i, pagination.pageCount - 4)) + i;
                   if (pageNum > pagination.pageCount) return null;
-                  
+
                   return (
                     <Link key={pageNum} href={`/tag/${params.slug}?page=${pageNum}`}>
-                      <Button 
+                      <Button
                         variant={pageNum === page ? "default" : "outline"}
                         size="sm"
                         className="w-10"
@@ -236,7 +236,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                   );
                 })}
               </div>
-              
+
               {page < pagination.pageCount && (
                 <Link href={`/tag/${params.slug}?page=${page + 1}`}>
                   <Button variant="outline" size="sm">

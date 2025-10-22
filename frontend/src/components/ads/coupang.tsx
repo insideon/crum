@@ -31,11 +31,11 @@ interface CoupangProductsProps {
   className?: string;
 }
 
-export function CoupangProducts({ 
-  keyword, 
-  category, 
-  limit = 4, 
-  className = '' 
+export function CoupangProducts({
+  keyword,
+  category,
+  limit = 4,
+  className = ''
 }: CoupangProductsProps) {
   const [products, setProducts] = useState<CoupangProduct[]>([]);
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ export function CoupangProducts({
       });
 
       const response = await fetch(`/api/coupang/products?${params}`);
-      
+
       if (!response.ok) {
         throw new Error('상품 조회 실패');
       }
@@ -138,7 +138,7 @@ export function CoupangProducts({
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               />
-              
+
               {/* 배송 배지 */}
               <div className="absolute top-2 left-2 flex flex-col gap-1">
                 {product.isRocketDelivery && (
@@ -206,7 +206,7 @@ export function CoupangProducts({
                 )}
 
                 {/* 쿠팡 링크 */}
-                <Link 
+                <Link
                   href={product.productUrl}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -234,14 +234,14 @@ export function CoupangProducts({
 }
 
 // 특정 카테고리별 상품 추천 컴포넌트
-export function CategoryProducts({ 
-  category, 
-  limit = 6, 
-  className = '' 
-}: { 
-  category: string; 
-  limit?: number; 
-  className?: string; 
+export function CategoryProducts({
+  category,
+  limit = 6,
+  className = ''
+}: {
+  category: string;
+  limit?: number;
+  className?: string;
 }) {
   const categoryKeywords: Record<string, string> = {
     'tech': '스마트폰',
@@ -255,7 +255,7 @@ export function CategoryProducts({
   const keyword = categoryKeywords[category] || category;
 
   return (
-    <CoupangProducts 
+    <CoupangProducts
       keyword={keyword}
       category={category}
       limit={limit}
@@ -267,7 +267,7 @@ export function CategoryProducts({
 // 인기 상품 컴포넌트
 export function PopularProducts({ className = '' }: { className?: string }) {
   return (
-    <CoupangProducts 
+    <CoupangProducts
       keyword="인기상품"
       limit={8}
       className={className}

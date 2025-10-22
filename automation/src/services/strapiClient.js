@@ -5,7 +5,7 @@ class StrapiClient {
   constructor() {
     this.baseURL = process.env.STRAPI_URL || 'http://localhost:1337';
     this.apiToken = process.env.STRAPI_API_TOKEN;
-    
+
     this.client = axios.create({
       baseURL: this.baseURL,
       timeout: 30000,
@@ -118,7 +118,7 @@ class StrapiClient {
    */
   async findOrCreateTags(tagNames) {
     const tags = [];
-    
+
     for (const tagName of tagNames) {
       try {
         // 기존 태그 조회

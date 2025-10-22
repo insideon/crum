@@ -16,18 +16,18 @@ class ImageService {
    */
   async getImageForKeyword(keyword, category = '기타') {
     logger.info(`이미지 검색 시작: ${keyword}`);
-    
+
     try {
       // 1. Unsplash에서 이미지 검색
       const imageUrl = await this.searchUnsplashImage(keyword);
-      
+
       if (imageUrl) {
         // 2. 이미지 다운로드
         const imageBuffer = await this.downloadImage(imageUrl);
-        
+
         // 3. Cloudinary에 업로드
         const uploadedImage = await this.uploadToCloudinary(imageBuffer, keyword);
-        
+
         logger.info(`${keyword} 이미지 처리 완료: ${uploadedImage.url}`);
         return uploadedImage;
       }
@@ -110,7 +110,7 @@ class ImageService {
 
       const FormData = require('form-data');
       const form = new FormData();
-      
+
       form.append('file', imageBuffer, {
         filename: `${keyword}.jpg`,
         contentType: 'image/jpeg'
@@ -176,7 +176,7 @@ class ImageService {
   async optimizeImage(imageBuffer, options = {}) {
     try {
       const sharp = require('sharp');
-      
+
       const {
         width = 1200,
         height = 630,
@@ -206,7 +206,7 @@ class ImageService {
     try {
       const sharp = require('sharp');
       const metadata = await sharp(imageBuffer).metadata();
-      
+
       return {
         width: metadata.width,
         height: metadata.height,

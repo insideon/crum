@@ -12,12 +12,12 @@ interface AdPlacementProps {
   className?: string;
 }
 
-export function AdPlacement({ 
-  type, 
-  position = 'middle', 
-  keyword, 
-  category, 
-  className = '' 
+export function AdPlacement({
+  type,
+  position = 'middle',
+  keyword,
+  category,
+  className = ''
 }: AdPlacementProps) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
@@ -30,39 +30,39 @@ export function AdPlacement({
     switch (type) {
       case 'banner':
         return <BannerAd className={className} />;
-      
+
       case 'sidebar':
         return <SidebarAd className={className} />;
-      
+
       case 'in-article':
         return <InArticleAd className={className} />;
-      
+
       case 'mobile':
         return <MobileAd className={className} />;
-      
+
       case 'coupang':
         return keyword ? (
-          <CoupangProducts 
-            keyword={keyword} 
-            className={className} 
+          <CoupangProducts
+            keyword={keyword}
+            className={className}
           />
         ) : null;
-      
+
       case 'category-products':
         return category ? (
-          <CategoryProducts 
-            category={category} 
-            className={className} 
+          <CategoryProducts
+            category={category}
+            className={className}
           />
         ) : null;
-      
+
       default:
         return null;
     }
   };
 
   const ad = renderAd();
-  
+
   if (!ad) {
     return null;
   }
@@ -80,10 +80,10 @@ export function HomePageAds() {
     <div className="space-y-6">
       {/* 상단 배너 */}
       <AdPlacement type="banner" position="top" />
-      
+
       {/* 중간 쿠팡 상품 */}
       <AdPlacement type="coupang" keyword="인기상품" position="middle" />
-      
+
       {/* 하단 배너 */}
       <AdPlacement type="banner" position="bottom" />
     </div>
@@ -95,19 +95,19 @@ export function ArticlePageAds({ keyword, category }: { keyword?: string; catego
     <div className="space-y-6">
       {/* 상단 배너 */}
       <AdPlacement type="banner" position="top" />
-      
+
       {/* 기사 중간 광고 */}
       <AdPlacement type="in-article" position="middle" />
-      
+
       {/* 관련 상품 */}
       {keyword && (
-        <AdPlacement 
-          type="coupang" 
-          keyword={keyword} 
-          position="middle" 
+        <AdPlacement
+          type="coupang"
+          keyword={keyword}
+          position="middle"
         />
       )}
-      
+
       {/* 하단 배너 */}
       <AdPlacement type="banner" position="bottom" />
     </div>
@@ -119,14 +119,14 @@ export function CategoryPageAds({ category }: { category: string }) {
     <div className="space-y-6">
       {/* 상단 배너 */}
       <AdPlacement type="banner" position="top" />
-      
+
       {/* 카테고리별 상품 */}
-      <AdPlacement 
-        type="category-products" 
-        category={category} 
-        position="middle" 
+      <AdPlacement
+        type="category-products"
+        category={category}
+        position="middle"
       />
-      
+
       {/* 하단 배너 */}
       <AdPlacement type="banner" position="bottom" />
     </div>
@@ -138,15 +138,15 @@ export function SidebarAds() {
     <div className="space-y-4">
       {/* 사이드바 광고 */}
       <AdPlacement type="sidebar" position="sidebar" />
-      
+
       {/* 쿠팡 인기 상품 */}
       <Card>
         <CardContent className="p-4">
           <h3 className="font-semibold mb-3">인기 상품</h3>
-          <AdPlacement 
-            type="coupang" 
-            keyword="인기상품" 
-            position="sidebar" 
+          <AdPlacement
+            type="coupang"
+            keyword="인기상품"
+            position="sidebar"
           />
         </CardContent>
       </Card>

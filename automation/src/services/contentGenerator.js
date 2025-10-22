@@ -27,7 +27,7 @@ class ContentGenerator {
    */
   async researchKeyword(keyword) {
     logger.info(`키워드 리서치 시작: ${keyword}`);
-    
+
     try {
       const researchData = {
         keyword,
@@ -136,7 +136,7 @@ class ContentGenerator {
       ];
 
       const results = [];
-      
+
       for (const source of newsSources) {
         try {
           const response = await axios.get(source, {
@@ -147,14 +147,14 @@ class ContentGenerator {
           });
 
           const $ = cheerio.load(response.data);
-          
+
           // 네이버 뉴스
           if (source.includes('naver.com')) {
             $('.news_area').each((i, element) => {
               const title = $(element).find('.news_tit').text().trim();
               const snippet = $(element).find('.news_dsc').text().trim();
               const url = $(element).find('.news_tit').attr('href');
-              
+
               if (title && snippet) {
                 results.push({
                   title,
@@ -205,10 +205,10 @@ class ContentGenerator {
    */
   async generateArticleWithLLM(keyword, researchData, category = '기타') {
     logger.info(`LLM 콘텐츠 생성 시작: ${keyword}`);
-    
+
     try {
       const prompt = this.buildPrompt(keyword, researchData, category);
-      
+
       const response = await this.openai.chat.completions.create({
         model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         messages: [
@@ -229,7 +229,7 @@ class ContentGenerator {
       });
 
       const content = response.choices[0].message.content;
-      
+
       // JSON 파싱 시도
       try {
         const parsedContent = JSON.parse(content);
@@ -250,7 +250,7 @@ class ContentGenerator {
    * 프롬프트 구성
    */
   buildPrompt(keyword, researchData, category) {
-    const sources = researchData.sources.map(source => 
+    const sources = researchData.sources.map(source =>
       `- ${source.title}: ${source.snippet}`
     ).join('\n');
 
@@ -285,7 +285,7 @@ ${sources}
    */
   parseTextToArticle(content, keyword, category) {
     const lines = content.split('\n').filter(line => line.trim());
-    
+
     let title = keyword;
     let excerpt = '';
     let articleContent = content;
@@ -327,7 +327,7 @@ ${sources}
     };
 
     const isValid = Object.values(validations).every(Boolean);
-    
+
     if (!isValid) {
       logger.warn('콘텐츠 검증 실패:', validations);
     }
@@ -342,7 +342,7 @@ ${sources}
     const profanityWords = [
       '욕설', '비방', '혐오', '폭력', '성인', '도박', '마약'
     ];
-    
+
     return profanityWords.some(word => content.includes(word));
   }
 
@@ -353,7 +353,7 @@ ${sources}
     const keyword = title.split(' ')[0]; // 첫 번째 단어를 키워드로 사용
     const contentWords = content.split(/\s+/).length;
     const keywordCount = (content.match(new RegExp(keyword, 'gi')) || []).length;
-    
+
     const density = (keywordCount / contentWords) * 100;
     return density >= 1 && density <= 5; // 1-5% 범위
   }
@@ -367,7 +367,7 @@ ${sources}
         return await this.openai.chat.completions.create(prompt);
       } catch (error) {
         if (i === maxRetries - 1) throw error;
-        
+
         const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s
         logger.warn(`LLM 호출 실패, ${delay}ms 후 재시도... (${i + 1}/${maxRetries})`);
         await new Promise(resolve => setTimeout(resolve, delay));

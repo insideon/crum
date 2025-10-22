@@ -77,7 +77,7 @@ async function fetchCoupangProducts({
   try {
     // 실제 Coupang Partners API 호출
     const apiUrl = 'https://api-gateway.coupang.com/v2/providers/affiliate_open_api/apis/openapi/products/search';
-    
+
     const params = new URLSearchParams({
       keyword,
       limit: limit.toString(),
@@ -97,7 +97,7 @@ async function fetchCoupangProducts({
     }
 
     const data = await response.json();
-    
+
     // API 응답을 우리 형식으로 변환
     return data.data?.productData?.map((product: any) => ({
       productId: product.productId,
@@ -117,12 +117,12 @@ async function fetchCoupangProducts({
 
   } catch (error) {
     console.error('Coupang API 호출 실패:', error);
-    
+
     // API 실패 시 더미 데이터 반환 (개발용)
     if (process.env.NODE_ENV === 'development') {
       return generateDummyProducts(keyword, limit);
     }
-    
+
     throw error;
   }
 }

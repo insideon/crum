@@ -28,17 +28,17 @@ export default function NotFound() {
                   홈으로 돌아가기
                 </Button>
               </Link>
-              
+
               <Link href="/search" className="block">
                 <Button variant="outline" className="w-full" size="lg">
                   <Search className="h-4 w-4 mr-2" />
                   검색하기
                 </Button>
               </Link>
-              
-              <Button 
-                variant="ghost" 
-                className="w-full" 
+
+              <Button
+                variant="ghost"
+                className="w-full"
                 size="lg"
                 onClick={() => window.history.back()}
               >

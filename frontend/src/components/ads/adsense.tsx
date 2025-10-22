@@ -11,12 +11,12 @@ interface AdSenseProps {
   responsive?: boolean;
 }
 
-export function AdSense({ 
-  adSlot, 
-  adFormat = 'auto', 
+export function AdSense({
+  adSlot,
+  adFormat = 'auto',
   adStyle = { display: 'block' },
   className = '',
-  responsive = true 
+  responsive = true
 }: AdSenseProps) {
   const pathname = usePathname();
 
@@ -62,7 +62,7 @@ export function BannerAd({ className = '' }: { className?: string }) {
       adSlot={process.env.NEXT_PUBLIC_ADSENSE_BANNER_SLOT || ''}
       adFormat="horizontal"
       className={`banner-ad ${className}`}
-      adStyle={{ 
+      adStyle={{
         display: 'block',
         width: '100%',
         height: '90px'
@@ -77,7 +77,7 @@ export function SidebarAd({ className = '' }: { className?: string }) {
       adSlot={process.env.NEXT_PUBLIC_ADSENSE_SIDEBAR_SLOT || ''}
       adFormat="vertical"
       className={`sidebar-ad ${className}`}
-      adStyle={{ 
+      adStyle={{
         display: 'block',
         width: '300px',
         height: '250px'
@@ -92,7 +92,7 @@ export function InArticleAd({ className = '' }: { className?: string }) {
       adSlot={process.env.NEXT_PUBLIC_ADSENSE_INARTICLE_SLOT || ''}
       adFormat="auto"
       className={`in-article-ad ${className}`}
-      adStyle={{ 
+      adStyle={{
         display: 'block',
         textAlign: 'center'
       }}
@@ -106,7 +106,7 @@ export function MobileAd({ className = '' }: { className?: string }) {
       adSlot={process.env.NEXT_PUBLIC_ADSENSE_MOBILE_SLOT || ''}
       adFormat="auto"
       className={`mobile-ad ${className}`}
-      adStyle={{ 
+      adStyle={{
         display: 'block',
         width: '100%',
         height: '50px'
@@ -121,7 +121,7 @@ export function RectangleAd({ className = '' }: { className?: string }) {
       adSlot={process.env.NEXT_PUBLIC_ADSENSE_RECTANGLE_SLOT || ''}
       adFormat="rectangle"
       className={`rectangle-ad ${className}`}
-      adStyle={{ 
+      adStyle={{
         display: 'block',
         width: '300px',
         height: '250px'

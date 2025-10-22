@@ -20,7 +20,7 @@ class GenerateContentJob {
    */
   async run() {
     logger.info('=== 콘텐츠 생성 Job 시작 ===');
-    
+
     try {
       // 1. Strapi 연결 확인
       const isHealthy = await this.strapiClient.healthCheck();
@@ -30,7 +30,7 @@ class GenerateContentJob {
 
       // 2. 처리할 키워드 목록 가져오기
       const keywords = await this.getKeywordsToProcess();
-      
+
       if (keywords.length === 0) {
         logger.warn('처리할 키워드가 없습니다.');
         return;
@@ -88,7 +88,7 @@ class GenerateContentJob {
         existingArticles.map(article => article.sourceKeyword?.toLowerCase())
       );
 
-      const filteredKeywords = testKeywords.filter(keyword => 
+      const filteredKeywords = testKeywords.filter(keyword =>
         !existingKeywords.has(keyword.toLowerCase())
       );
 
@@ -106,7 +106,7 @@ class GenerateContentJob {
    */
   async processKeyword(keyword) {
     logger.info(`키워드 처리 시작: ${keyword}`);
-    
+
     try {
       // 1. 중복 체크
       const exists = await this.strapiClient.checkArticleExists(keyword);
@@ -117,14 +117,14 @@ class GenerateContentJob {
 
       // 2. 키워드 리서치
       const researchData = await this.contentGenerator.researchKeyword(keyword);
-      
+
       // 3. 카테고리 결정
       const category = this.determineCategory(keyword, researchData);
-      
+
       // 4. LLM으로 콘텐츠 생성
       const article = await this.contentGenerator.generateArticleWithLLM(
-        keyword, 
-        researchData, 
+        keyword,
+        researchData,
         category
       );
 
@@ -137,8 +137,8 @@ class GenerateContentJob {
 
       // 6. SEO 최적화
       const optimizedArticle = await this.seoOptimizer.optimizeArticle(
-        article, 
-        keyword, 
+        article,
+        keyword,
         category
       );
 
@@ -182,7 +182,7 @@ class GenerateContentJob {
   determineCategory(keyword, researchData) {
     // 리서치 데이터의 소스들을 분석하여 카테고리 결정
     const categoryScores = {};
-    
+
     researchData.sources.forEach(source => {
       if (source.source === 'news-api' || source.source === 'naver-news') {
         categoryScores['뉴스/시사'] = (categoryScores['뉴스/시사'] || 0) + 2;
@@ -207,27 +207,27 @@ class GenerateContentJob {
    */
   classifyKeyword(keyword) {
     const lowerKeyword = keyword.toLowerCase();
-    
-    if (lowerKeyword.includes('ai') || lowerKeyword.includes('인공지능') || 
+
+    if (lowerKeyword.includes('ai') || lowerKeyword.includes('인공지능') ||
         lowerKeyword.includes('스마트폰') || lowerKeyword.includes('앱')) {
       return '기술/IT';
     }
-    
-    if (lowerKeyword.includes('경제') || lowerKeyword.includes('주식') || 
+
+    if (lowerKeyword.includes('경제') || lowerKeyword.includes('주식') ||
         lowerKeyword.includes('투자') || lowerKeyword.includes('부동산')) {
       return '경제/재테크';
     }
-    
-    if (lowerKeyword.includes('건강') || lowerKeyword.includes('운동') || 
+
+    if (lowerKeyword.includes('건강') || lowerKeyword.includes('운동') ||
         lowerKeyword.includes('다이어트') || lowerKeyword.includes('의료')) {
       return '생활/건강';
     }
-    
-    if (lowerKeyword.includes('여행') || lowerKeyword.includes('관광') || 
+
+    if (lowerKeyword.includes('여행') || lowerKeyword.includes('관광') ||
         lowerKeyword.includes('문화') || lowerKeyword.includes('축제')) {
       return '여행/문화';
     }
-    
+
     return '기타';
   }
 
@@ -236,20 +236,20 @@ class GenerateContentJob {
    */
   calculateTrendScore(keyword, researchData) {
     let score = 5; // 기본 점수
-    
+
     // 소스 수에 따른 점수 추가
     score += Math.min(researchData.sources.length * 0.5, 3);
-    
+
     // 뉴스 소스가 있으면 추가 점수
-    const hasNews = researchData.sources.some(source => 
+    const hasNews = researchData.sources.some(source =>
       source.source === 'news-api' || source.source === 'naver-news'
     );
     if (hasNews) score += 2;
-    
+
     // 위키피디아 소스가 있으면 추가 점수
     const hasWiki = researchData.sources.some(source => source.source === 'wikipedia');
     if (hasWiki) score += 1;
-    
+
     return Math.round(score * 10) / 10;
   }
 
@@ -260,7 +260,7 @@ class GenerateContentJob {
     const stats = {
       totalProcessed: this.processedCount,
       totalErrors: this.errorCount,
-      successRate: this.processedCount > 0 ? 
+      successRate: this.processedCount > 0 ?
         ((this.processedCount / (this.processedCount + this.errorCount)) * 100).toFixed(1) + '%' : '0%',
       articles: results.map(article => ({
         title: article.title,

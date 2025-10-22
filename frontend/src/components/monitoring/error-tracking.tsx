@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  AlertTriangle, 
-  Bug, 
-  Clock, 
-  RefreshCw, 
+import {
+  AlertTriangle,
+  Bug,
+  Clock,
+  RefreshCw,
   Filter,
   Search,
   ExternalLink
@@ -83,7 +83,7 @@ export function ErrorTracking() {
         method: 'POST'
       });
       if (response.ok) {
-        setErrors(prev => prev.map(error => 
+        setErrors(prev => prev.map(error =>
           error.id === errorId ? { ...error, resolved: true } : error
         ));
       }
@@ -239,8 +239,8 @@ export function ErrorTracking() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="text-sm font-medium mb-2 block">레벨</label>
-              <select 
-                value={filter.level} 
+              <select
+                value={filter.level}
                 onChange={(e) => setFilter(prev => ({ ...prev, level: e.target.value }))}
                 className="w-full p-2 border rounded"
               >
@@ -252,8 +252,8 @@ export function ErrorTracking() {
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">소스</label>
-              <select 
-                value={filter.source} 
+              <select
+                value={filter.source}
                 onChange={(e) => setFilter(prev => ({ ...prev, source: e.target.value }))}
                 className="w-full p-2 border rounded"
               >
@@ -265,8 +265,8 @@ export function ErrorTracking() {
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">상태</label>
-              <select 
-                value={filter.resolved} 
+              <select
+                value={filter.resolved}
                 onChange={(e) => setFilter(prev => ({ ...prev, resolved: e.target.value }))}
                 className="w-full p-2 border rounded"
               >
@@ -317,8 +317,8 @@ export function ErrorTracking() {
                         {new Date(error.timestamp).toLocaleString('ko-KR')}
                       </span>
                       {!error.resolved && (
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
                           onClick={() => resolveError(error.id)}
                         >
@@ -327,16 +327,16 @@ export function ErrorTracking() {
                       )}
                     </div>
                   </div>
-                  
+
                   <p className="text-sm font-medium mb-2">{error.message}</p>
-                  
+
                   {error.url && (
                     <div className="flex items-center space-x-2 mb-2">
                       <ExternalLink className="h-3 w-3 text-muted-foreground" />
                       <span className="text-xs text-muted-foreground">{error.url}</span>
                     </div>
                   )}
-                  
+
                   {error.stack && (
                     <details className="mt-2">
                       <summary className="text-xs text-muted-foreground cursor-pointer">
